@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2>Welcome, {{ user?.name || 'User' }}</h2>
+    <p>Your role: <strong>{{ user?.role }}</strong></p>
+  </div>
+
+  <nav class="dashboard-nav">
+    <ng-container *ngIf="user?.role !== 'admin'; else adminLinks">
+      <button routerLink="browse-policies" class="btn btn-primary">
+        📄 Browse Policies
+      </button>
+      <button routerLink="claims" class="btn btn-primary">
+        📝 My Claims
+      </button>
+      <button routerLink="my-policies" class="btn btn-primary">
+        📂 My Policies
+      </button>
+      <button routerLink="/payments" class="btn btn-primary">
+        💳 My Payments
+      </button>
+    </ng-container>
+    <ng-template #adminLinks>
+      <button routerLink="/admin" class="btn btn-primary">⚙️ Admin Portal</button>
+    </ng-template>
+
+    <button (click)="logout()" class="btn btn-danger">🚪 Logout</button>
+  </nav>
+
+  <!-- Routed child components appear here -->
+  <div class="dashboard-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

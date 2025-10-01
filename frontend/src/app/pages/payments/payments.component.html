@@ -1,0 +1,16 @@
+<h2>My Payments</h2>
+<button routerLink="/dashboard">Back</button>
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<ul>
+  <li *ngFor="let p of payments">
+    <strong>{{ p.userPolicyId?.policyProductId?.title || 'Policy' }}</strong>
+    <br />
+    Amount: ₹{{ p.amount }} | Method: {{ p.method }} | Ref: {{ p.reference }}
+    <br />
+    Date: {{ p.createdAt | date:'medium' }}
+  </li>
+  <li *ngIf="payments.length === 0 && !error" class="empty-state">No payments found.</li>
+  </ul>
+
+

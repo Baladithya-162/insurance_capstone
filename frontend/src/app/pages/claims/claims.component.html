@@ -1,0 +1,25 @@
+<h2>My Claims</h2>
+<button routerLink="/dashboard">Back</button>
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<form (ngSubmit)="submitClaim()">
+  <label for="userPolicyIdSelect">Select Your Policy</label>
+  <select id="userPolicyIdSelect" [(ngModel)]="userPolicyId" name="userPolicyId" required>
+    <option value="">Select Your Policy</option>
+    <option *ngFor="let p of userPolicies" [value]="p._id">
+      {{ p.policyProductId?.title || 'Policy' }} ({{ p._id }})
+    </option>
+  </select>
+  <input [(ngModel)]="description" name="description" placeholder="Description" required />
+  <input [(ngModel)]="amountClaimed" name="amountClaimed" type="number" placeholder="Amount" required />
+  <input [(ngModel)]="incidentDate" name="incidentDate" type="date" placeholder="Incident Date" />
+  <button type="submit">Submit Claim</button>
+</form>
+
+<hr />
+
+<ul>
+  <li *ngFor="let c of claims">
+    <strong>{{ c.description }}</strong> - ₹{{ c.amountClaimed }} - Status: {{ c.status }}
+  </li>
+</ul>

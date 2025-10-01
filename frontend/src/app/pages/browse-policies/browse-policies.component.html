@@ -1,0 +1,35 @@
+<h2>Browse Policies</h2>
+<button routerLink="/dashboard">Back</button>
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<!-- Policy List -->
+<ul *ngIf="!selectedPolicy && policies.length > 0">
+  <li *ngFor="let p of policies">
+    <strong>{{ p.title }}</strong> ({{ p.code }})
+    <br />
+    Premium: ₹{{ p.premium }} | Coverage: ₹{{ p.minSumInsured }} | Term: {{ p.termMonths }} months
+    <br />
+    <button (click)="viewDetails(p)">View Details</button>
+  </li>
+</ul>
+
+<p *ngIf="!selectedPolicy && policies.length === 0">No policies available</p>
+
+<!-- Policy Details & Purchase Form -->
+<div *ngIf="selectedPolicy" class="policy-details">
+  <h3>{{ selectedPolicy.title }}</h3>
+  <p>{{ selectedPolicy.description }}</p>
+  <p><strong>Premium:</strong> ₹{{ selectedPolicy.premium }}</p>
+  <p><strong>Coverage:</strong> ₹{{ selectedPolicy.minSumInsured }}</p>
+  <p><strong>Term:</strong> {{ selectedPolicy.termMonths }} months</p>
+
+  <h4>Enter Purchase Details</h4>
+  <form (ngSubmit)="purchasePolicy(selectedPolicy._id)">
+    <input [(ngModel)]="nomineeName" name="nomineeName" placeholder="Nominee Name" required />
+    <input [(ngModel)]="nomineeRelation" name="nomineeRelation" placeholder="Nominee Relation" required />
+     <input [(ngModel)]="termMonths" name="termMonths" type="number" [value]="selectedPolicy.termMonths" placeholder="Enter Term (months)" title="Term in months" />
+
+    <button type="submit">Buy Policy</button>
+    <button type="button" (click)="selectedPolicy = null">Back</button>
+  </form>
+</div>

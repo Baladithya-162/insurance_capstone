@@ -1,0 +1,13 @@
+<button
+  [attr.type]="type"
+  class="btn"
+  [ngClass]="{
+    'btn-primary': color === 'primary',
+    'btn-secondary': color === 'secondary',
+    'btn-danger': color === 'danger'
+  }"
+  [disabled]="disabled"
+  (click)="onClick()"
+>
+  {{ label }}
+</button>

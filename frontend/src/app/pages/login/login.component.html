@@ -1,0 +1,18 @@
+<div class="auth-container">
+  <h2>Login</h2>
+
+  <form (ngSubmit)="onLogin()">
+    <input [(ngModel)]="email" name="email" type="email" placeholder="Email" required />
+    <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
+
+    <app-button label="Login" type="submit" color="primary"></app-button>
+  </form>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+   <p>
+    Don't have an account?
+    <button routerLink="/register" class="link-btn">Register</button>
+  </p>
+
+</div>

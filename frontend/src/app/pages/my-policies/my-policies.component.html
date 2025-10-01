@@ -1,0 +1,41 @@
+<h2>My Policies</h2>
+<button routerLink="/dashboard">Back</button>
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<ul>
+  <li *ngFor="let p of myPolicies">
+    <strong>{{ p.policyProductId?.title || 'Unknown Policy' }}</strong>
+    <br />
+    Status: <span [ngClass]="{ active: p.status === 'ACTIVE', cancelled: p.status === 'CANCELLED' }">
+      {{ p.status }}
+    </span>
+    <br />
+    Valid: {{ p.startDate | date }} → {{ p.endDate | date }}
+    <br />
+    Premium Paid: ₹{{ p.premiumPaid }}
+
+    <div class="actions">
+      <button (click)="openClaim(p)">Submit Claim</button>
+      <button (click)="openRepay(p)">Repay</button>
+      <button (click)="cancelPolicy(p)" [disabled]="p.status === 'CANCELLED'">Cancel Policy</button>
+    </div>
+
+    <!-- Claim form inline -->
+    <div *ngIf="claimPolicyId === p._id" class="inline-form">
+      <h4>Submit Claim</h4>
+      <input [(ngModel)]="claimDescription" name="claimDescription" placeholder="Description" />
+      <input [(ngModel)]="claimAmount" name="claimAmount" type="number" placeholder="Amount" />
+      <button (click)="submitClaim()">Submit</button>
+      <button (click)="claimPolicyId = null">Cancel</button>
+    </div>
+
+    <!-- Repay form inline -->
+    <div *ngIf="repayPolicyId === p._id" class="inline-form">
+      <h4>Repay Premium</h4>
+      <input [(ngModel)]="repayAmount" name="repayAmount" type="number" placeholder="Amount" />
+      <input [(ngModel)]="repayReference" name="repayReference" placeholder="Reference (optional)" />
+      <button (click)="submitRepay()">Pay</button>
+      <button (click)="repayPolicyId = null">Cancel</button>
+    </div>
+  </li>
+</ul>

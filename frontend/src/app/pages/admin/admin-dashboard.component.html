@@ -1,0 +1,97 @@
+<h2>Admin Portal</h2>
+<button routerLink="/dashboard">Back</button>
+
+<section>
+  <h3>Summary</h3>
+  <pre *ngIf="summary">{{ summary | json }}</pre>
+</section>
+
+<section>
+  <h3>Audit Logs</h3>
+  <div class="inline-form">
+    <input [(ngModel)]="auditSearch" placeholder="Search details/action" name="auditSearch" (input)="applyAuditFilters()" />
+    <input [(ngModel)]="auditAction" placeholder="Action (e.g., PAYMENT_RECORDED)" name="auditAction" (input)="applyAuditFilters()" />
+    <input [(ngModel)]="auditFrom" type="date" name="auditFrom" (change)="applyAuditFilters()" />
+    <input [(ngModel)]="auditTo" type="date" name="auditTo" (change)="applyAuditFilters()" />
+  </div>
+  <ul>
+    <li *ngFor="let a of auditFiltered">
+      {{ a.action }} - {{ a.details | json }} - {{ a.createdAt | date:'short' }}
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h3>Claims</h3>
+  <ul>
+    <li *ngFor="let c of claims">
+      <strong>{{ c.userPolicyId?.policyProductId?.title || 'Policy' }}</strong>
+      - ₹{{ c.amountClaimed }}
+      - {{ c.status }}
+      <button (click)="decideClaim(c._id, 'APPROVED')" [disabled]="c.status==='APPROVED'" class="btn-approve">Approve</button>
+      <button (click)="decideClaim(c._id, 'REJECTED')" [disabled]="c.status==='REJECTED'" class="btn-reject">Reject</button>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h3>Create Agent</h3>
+  <input [(ngModel)]="agentName" placeholder="Agent Name" name="agentName" />
+  <input [(ngModel)]="agentEmail" placeholder="Agent Email" name="agentEmail" />
+  <input [(ngModel)]="agentPassword" placeholder="Password" name="agentPassword" type="password" />
+  <button (click)="createAgent()" class="btn-create">Create</button>
+</section>
+
+<section>
+  <h3>Assign Agent to Policy</h3>
+  <select [(ngModel)]="selectedPolicyId" name="policyId">
+    <option value="">Select UserPolicy</option>
+    <option *ngFor="let p of userPolicies" [value]="p._id">
+      {{ p.label }}
+    </option>
+  </select>
+  <select [(ngModel)]="selectedAgentId" name="agentId">
+    <option value="">Select Agent</option>
+    <option *ngFor="let a of agents" [value]="a._id">{{ a.name }} ({{ a.email }})</option>
+  </select>
+  <button (click)="assignAgent()" class="btn-create">Assign</button>
+</section>
+
+<section>
+  <h3>All Policies</h3>
+  <div class="inline-form">
+    <input [(ngModel)]="policyCode" placeholder="Code" name="code" />
+    <input [(ngModel)]="policyTitle" placeholder="Title" name="title" />
+    <input [(ngModel)]="policyDescription" placeholder="Description" name="description" />
+    <input [(ngModel)]="policyPremium" type="number" placeholder="Premium" name="premium" />
+    <input [(ngModel)]="policyTermMonths" type="number" placeholder="Term Months" name="termMonths" />
+    <input [(ngModel)]="policyMinSumInsured" type="number" placeholder="Min Sum Insured" name="minSumInsured" />
+    <button (click)="createPolicy()" class="btn-create">Create Policy</button>
+  </div>
+  <ul>
+    <li *ngFor="let p of policies">
+      <strong>{{ p.title }}</strong> ({{ p.code }}) - ₹{{ p.premium }} / {{ p.termMonths }} months
+      <button (click)="deletePolicy(p._id)" class="btn-delete">Delete</button>
+    </li>
+    <li *ngIf="policies.length === 0">No policies found.</li>
+  </ul>
+</section>
+
+<section>
+  <h3>All Payments (Admin)</h3>
+  <div class="inline-form">
+    <input [(ngModel)]="paymentSearch" placeholder="Search by user/policy/ref" name="paymentSearch" (input)="applyPaymentFilters()" />
+    <input [(ngModel)]="paymentMin" type="number" placeholder="Min Amount" name="paymentMin" (input)="applyPaymentFilters()" />
+    <input [(ngModel)]="paymentMax" type="number" placeholder="Max Amount" name="paymentMax" (input)="applyPaymentFilters()" />
+  </div>
+  <ul>
+    <li *ngFor="let p of adminPaymentsFiltered">
+      <strong>{{ p.userPolicyId?.policyProductId?.title || 'Policy' }}</strong>
+      - ₹{{ p.amount }} by {{ p.userId?.name || p.userId?.email || 'user' }}
+      - Ref: {{ p.reference }} - {{ p.createdAt | date:'medium' }}
+    </li>
+    <li *ngIf="adminPaymentsFiltered.length === 0">No payments found.</li>
+  </ul>
+</section>
+
+
