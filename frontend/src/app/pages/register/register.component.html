@@ -6,7 +6,7 @@
     <input [(ngModel)]="email" name="email" type="email" placeholder="Email" required />
     <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
 
-    <app-button label="Register" type="submit" color="primary"></app-button>
+    <button type="submit" class="btn btn-primary">Register</button>
   </form>
 
   <p *ngIf="error" class="error">{{ error }}</p>

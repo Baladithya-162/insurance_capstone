@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { ButtonComponent } from '../../button/button.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, ButtonComponent]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class RegisterComponent {
   name = '';
